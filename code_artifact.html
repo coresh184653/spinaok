@@ -1,0 +1,3593 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>СПИНА'ОК — Студия массажа бизнес-класса</title>
+
+  <!-- Шрифты -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- html2canvas для генерации PNG сертификата -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <style>
+    /* =========================================================
+       1. ПЕРЕМЕННЫЕ И БАЗОВЫЕ СТИЛИ (изолированы внутри .spinaok-page)
+    ========================================================== */
+    .spinaok-page {
+      --bg: #f4efe6;
+      --bg-soft: #f9f6f0;
+      --card: rgba(255, 255, 255, 0.78);
+      --card-hover: rgba(255, 255, 255, 0.92);
+      --white: #ffffff;
+      --text: #1e2d27;
+      --muted: #5a6e65;
+      --accent: #689b86;
+      --accent-dark: #467360;
+      --accent-light: #d8ece3;
+      --gold: #c9a461;
+      --gold-light: #e6d1a7;
+      --rose: #ead7cf;
+      --shadow: 0 14px 40px rgba(30, 52, 44, 0.10);
+      --shadow-soft: 0 24px 60px rgba(30, 52, 44, 0.16);
+      --shadow-glow: 0 10px 30px rgba(104, 155, 134, 0.38);
+      --radius-xl: 32px;
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --radius-sm: 12px;
+      --transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+      --container: 1220px;
+
+      position: relative;
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: clip;
+      background:
+        radial-gradient(circle at 12% 8%, rgba(216, 236, 227, 0.95), transparent 36%),
+        radial-gradient(circle at 88% 18%, rgba(234, 215, 207, 0.55), transparent 28%),
+        radial-gradient(circle at 82% 88%, rgba(201, 164, 97, 0.18), transparent 30%),
+        linear-gradient(180deg, #faf7f2 0%, #f1ece2 100%);
+    }
+
+    .spinaok-page,
+    .spinaok-page *,
+    .spinaok-page *::before,
+    .spinaok-page *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    .spinaok-page img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .spinaok-page a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .spinaok-page button {
+      font-family: inherit;
+      border: none;
+      cursor: pointer;
+      background: none;
+    }
+
+    .spk-container {
+      width: min(var(--container), calc(100% - 32px));
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Прогресс-бар прокрутки сверху */
+    .spinaok-page .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--gold), var(--accent-dark));
+      z-index: 2500;
+      box-shadow: 0 0 12px rgba(201, 164, 97, 0.6);
+      transition: width 0.1s ease-out;
+    }
+
+    /* Фоновый интерактивный Canvas (золотая пыльца и SPA-аура) */
+    .spinaok-page .ambient-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.85;
+    }
+
+    /* Плавающие анимированные блобы на фоне */
+    .spinaok-page .ambient-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(75px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.45;
+      animation: spk-orb-drift 18s ease-in-out infinite alternate;
+    }
+
+    .spinaok-page .orb-1 {
+      width: 440px;
+      height: 440px;
+      background: radial-gradient(circle, rgba(104, 155, 134, 0.35), transparent 70%);
+      top: 420px;
+      left: -140px;
+    }
+
+    .spinaok-page .orb-2 {
+      width: 520px;
+      height: 520px;
+      background: radial-gradient(circle, rgba(201, 164, 97, 0.28), transparent 70%);
+      top: 1650px;
+      right: -180px;
+      animation-delay: -6s;
+    }
+
+    .spinaok-page .orb-3 {
+      width: 460px;
+      height: 460px;
+      background: radial-gradient(circle, rgba(234, 215, 207, 0.55), transparent 70%);
+      top: 3100px;
+      left: -120px;
+      animation-delay: -11s;
+    }
+
+    @keyframes spk-orb-drift {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(40px, -30px) scale(1.08); }
+      100% { transform: translate(-25px, 35px) scale(0.95); }
+    }
+
+    .spinaok-page .section {
+      padding: 92px 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .spinaok-page .section-eyebrow {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 14px;
+    }
+
+    .spinaok-page .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 4.2vw, 54px);
+      line-height: 1.1;
+      margin-bottom: 16px;
+      text-align: center;
+      letter-spacing: -0.01em;
+    }
+
+    .spinaok-page .section-title em {
+      font-style: italic;
+      color: var(--accent-dark);
+      font-weight: 600;
+    }
+
+    .spinaok-page .section-subtitle {
+      max-width: 760px;
+      margin: 0 auto 48px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    /* Эффект стекла + интерактивный Flash-блик при наведении */
+    .spinaok-page .glass {
+      background: var(--card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.72);
+      box-shadow: var(--shadow);
+    }
+
+    .spinaok-page .spotlight-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .spinaok-page .spotlight-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        480px circle at var(--mouse-x, -500px) var(--mouse-y, -500px),
+        rgba(255, 255, 255, 0.65),
+        rgba(201, 164, 97, 0.12) 38%,
+        transparent 75%
+      );
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .spinaok-page .spotlight-card:hover::before {
+      opacity: 1;
+    }
+
+    .spinaok-page .spotlight-card > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Кнопки с бегущим световым бликом (Flash Shimmer) */
+    .spinaok-page .btn {
+      position: relative;
+      overflow: hidden;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 15px 26px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 15px;
+      transition: var(--transition);
+      line-height: 1.15;
+      text-align: center;
+      isolation: isolate;
+    }
+
+    .spinaok-page .btn::after {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -60%;
+      width: 45%;
+      height: 200%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.45),
+        transparent
+      );
+      transform: rotate(25deg);
+      animation: spk-shimmer 5.5s infinite;
+      pointer-events: none;
+    }
+
+    @keyframes spk-shimmer {
+      0% { left: -65%; }
+      22% { left: 135%; }
+      100% { left: 135%; }
+    }
+
+    .spinaok-page .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+      color: #fff;
+      box-shadow: 0 10px 26px rgba(70, 115, 96, 0.32);
+    }
+
+    .spinaok-page .btn-primary:hover {
+      transform: translateY(-3px) scale(1.01);
+      box-shadow: 0 16px 34px rgba(70, 115, 96, 0.44);
+    }
+
+    .spinaok-page .btn-secondary {
+      background: rgba(255, 255, 255, 0.84);
+      color: var(--text);
+      border: 1px solid rgba(104, 155, 134, 0.32);
+    }
+
+    .spinaok-page .btn-secondary:hover {
+      background: #fff;
+      border-color: var(--accent);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 24px rgba(30, 52, 44, 0.08);
+    }
+
+    .spinaok-page .btn-gold {
+      background: linear-gradient(135deg, #d7b879, #b28840);
+      color: #fff;
+      box-shadow: 0 12px 30px rgba(178, 136, 64, 0.34);
+    }
+
+    .spinaok-page .btn-gold:hover {
+      transform: translateY(-3px) scale(1.01);
+      box-shadow: 0 16px 38px rgba(178, 136, 64, 0.46);
+    }
+
+    /* Эффект водной ряби при клике */
+    .spinaok-page .spk-ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.55);
+      transform: scale(0);
+      animation: spk-ripple-anim 0.65s ease-out;
+      pointer-events: none;
+    }
+
+    @keyframes spk-ripple-anim {
+      to {
+        transform: scale(3.5);
+        opacity: 0;
+      }
+    }
+
+    .spinaok-page .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 15px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.76);
+      color: var(--accent-dark);
+      border: 1px solid rgba(104, 155, 134, 0.28);
+      font-size: 13.5px;
+      font-weight: 700;
+      box-shadow: 0 4px 14px rgba(30, 52, 44, 0.04);
+    }
+
+    .spinaok-page .pill-gold {
+      background: linear-gradient(135deg, rgba(255, 250, 240, 0.9), rgba(230, 209, 167, 0.35));
+      color: #846226;
+      border-color: rgba(201, 164, 97, 0.45);
+    }
+
+    .spinaok-page .fade-up {
+      opacity: 0;
+      transform: translateY(26px);
+      transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .spinaok-page .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .spinaok-page .text-muted {
+      color: var(--muted);
+    }
+
+    /* =========================================================
+       2. HEADER
+    ========================================================== */
+    .spinaok-page .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      padding: 13px 0;
+      background: rgba(249, 246, 240, 0.82);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(104, 155, 134, 0.15);
+      transition: var(--transition);
+    }
+
+    .spinaok-page .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .spinaok-page .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 20px;
+      transition: transform 0.3s ease;
+    }
+
+    .spinaok-page .logo:hover {
+      transform: scale(1.03);
+    }
+
+    .spinaok-page .logo img {
+      height: 48px;
+      width: auto;
+      display: block;
+      border-radius: 14px;
+    }
+
+    .spinaok-page .nav-links {
+      display: flex;
+      gap: 22px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .spinaok-page .nav-links a {
+      position: relative;
+      color: var(--muted);
+      font-weight: 600;
+      transition: var(--transition);
+      cursor: pointer;
+      font-size: 14.5px;
+      padding: 4px 0;
+    }
+
+    .spinaok-page .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0%;
+      height: 2px;
+      border-radius: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--gold));
+      transition: width 0.3s ease;
+    }
+
+    .spinaok-page .nav-links a:hover {
+      color: var(--accent-dark);
+    }
+
+    .spinaok-page .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .spinaok-page .nav-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    /* =========================================================
+       3. HERO + БЕГУЩАЯ СТРОКА + СЧЁТЧИКИ
+    ========================================================== */
+    .spinaok-page .hero {
+      position: relative;
+      padding: 64px 0 48px;
+      overflow: hidden;
+    }
+
+    .spinaok-page .hero-grid {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 34px;
+      align-items: center;
+    }
+
+    .spinaok-page .hero-card {
+      padding: 40px;
+      border-radius: var(--radius-xl);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .spinaok-page .hero-card::after {
+      content: "";
+      position: absolute;
+      width: 240px;
+      height: 240px;
+      right: -80px;
+      top: -80px;
+      background: radial-gradient(circle, rgba(104, 155, 134, 0.25), transparent 70%);
+      pointer-events: none;
+    }
+
+    .spinaok-page .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(38px, 4.7vw, 68px);
+      line-height: 1.04;
+      margin: 18px 0 18px;
+      position: relative;
+    }
+
+    .spinaok-page .hero h1 .shimmer-text {
+      background: linear-gradient(120deg, var(--accent-dark) 0%, #b58d46 50%, var(--accent-dark) 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: spk-text-shine 6s linear infinite;
+      font-style: italic;
+    }
+
+    @keyframes spk-text-shine {
+      to { background-position: 200% center; }
+    }
+
+    .spinaok-page .hero p {
+      font-size: 17.5px;
+      color: var(--muted);
+      max-width: 640px;
+      margin-bottom: 28px;
+      position: relative;
+    }
+
+    .spinaok-page .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 26px;
+      position: relative;
+    }
+
+    .spinaok-page .hero-badges {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    .spinaok-page .hero-visual-wrap {
+      position: relative;
+      perspective: 1100px;
+    }
+
+    /* Анимированные золотые орбиты вокруг фото */
+    .spinaok-page .hero-orbit {
+      position: absolute;
+      inset: -14px;
+      border-radius: 28px;
+      border: 1px dashed rgba(201, 164, 97, 0.45);
+      pointer-events: none;
+      animation: spk-pulse-ring 6s ease-in-out infinite;
+    }
+
+    @keyframes spk-pulse-ring {
+      0%, 100% { transform: scale(1); opacity: 0.55; }
+      50% { transform: scale(1.02); opacity: 0.9; }
+    }
+
+    .spinaok-page .hero-visual {
+      position: relative;
+      min-height: 560px;
+      border-radius: 22px;
+      overflow: hidden;
+      background-image: url('https://static.craftum.com/HDIeKEV8UF98OQlPf4jVm6I6LdM=/2880x0/filters:no_upscale()/https://274418.selcdn.ru/cv08300-33250f0d-0664-43fc-9dbf-9d89738d114e/uploads/100808/d08b5472-b509-41d7-a6bf-243af4b70690.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      box-shadow: var(--shadow-soft);
+      transition: transform 0.35s ease-out;
+      border: 2px solid rgba(255, 255, 255, 0.75);
+    }
+
+    .spinaok-page .hero-visual::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(145deg, rgba(18, 36, 31, 0.22), rgba(255, 255, 255, 0) 50%, rgba(201, 164, 97, 0.25));
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Живой световой луч поверх Hero-картинки */
+    .spinaok-page .hero-visual::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.38), transparent 28%);
+      animation: spk-sunbeam 9s ease-in-out infinite alternate;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    @keyframes spk-sunbeam {
+      0% { transform: translate(-8%, -6%) scale(1); }
+      100% { transform: translate(12%, 10%) scale(1.15); }
+    }
+
+    .spinaok-page .floating-card {
+      position: absolute;
+      padding: 16px 20px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      box-shadow: 0 16px 36px rgba(20, 40, 32, 0.16);
+      max-width: 260px;
+      animation: spk-float 4.5s ease-in-out infinite;
+      z-index: 3;
+    }
+
+    .spinaok-page .floating-card strong {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--accent-dark);
+      margin-bottom: 4px;
+      font-size: 16px;
+    }
+
+    .spinaok-page .floating-card span {
+      color: var(--muted);
+      font-size: 13.5px;
+      line-height: 1.4;
+      display: block;
+    }
+
+    .spinaok-page .floating-1 {
+      top: 28px;
+      left: 22px;
+    }
+
+    .spinaok-page .floating-2 {
+      bottom: 26px;
+      right: 22px;
+      animation-delay: 1.4s;
+    }
+
+    .spinaok-page .floating-3 {
+      top: 50%;
+      right: 18px;
+      transform: translateY(-50%);
+      animation-delay: 2.5s;
+      padding: 12px 16px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .spinaok-page .pulse-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #2ebd70;
+      box-shadow: 0 0 0 0 rgba(46, 189, 112, 0.7);
+      animation: spk-pulse-green 2s infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes spk-pulse-green {
+      0% { box-shadow: 0 0 0 0 rgba(46, 189, 112, 0.65); }
+      70% { box-shadow: 0 0 0 10px rgba(46, 189, 112, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(46, 189, 112, 0); }
+    }
+
+    @keyframes spk-float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* Статистика в цифрах */
+    .spinaok-page .stats-strip {
+      margin-top: 38px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .spinaok-page .stat-card {
+      padding: 22px 20px;
+      border-radius: 24px;
+      text-align: center;
+      transition: var(--transition);
+    }
+
+    .spinaok-page .stat-card:hover {
+      transform: translateY(-4px);
+      background: var(--card-hover);
+    }
+
+    .spinaok-page .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(30px, 3vw, 42px);
+      font-weight: 700;
+      color: var(--accent-dark);
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+
+    .spinaok-page .stat-label {
+      font-size: 14px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    /* Элегантная бегущая строка (Marquee) */
+    .spinaok-page .marquee-bar {
+      position: relative;
+      z-index: 2;
+      padding: 16px 0;
+      background: linear-gradient(90deg, rgba(104, 155, 134, 0.12), rgba(201, 164, 97, 0.16), rgba(104, 155, 134, 0.12));
+      border-top: 1px solid rgba(104, 155, 134, 0.18);
+      border-bottom: 1px solid rgba(104, 155, 134, 0.18);
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .spinaok-page .marquee-track {
+      display: inline-flex;
+      gap: 38px;
+      animation: spk-marquee 34s linear infinite;
+    }
+
+    .spinaok-page .marquee-bar:hover .marquee-track {
+      animation-play-state: paused;
+    }
+
+    .spinaok-page .marquee-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 14.5px;
+      color: var(--accent-dark);
+      letter-spacing: 0.02em;
+    }
+
+    .spinaok-page .marquee-item i {
+      color: var(--gold);
+    }
+
+    @keyframes spk-marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* =========================================================
+       4. ПРЕИМУЩЕСТВА
+    ========================================================== */
+    .spinaok-page .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 22px;
+    }
+
+    .spinaok-page .benefit {
+      padding: 28px 24px;
+      border-radius: 26px;
+      transition: var(--transition);
+    }
+
+    .spinaok-page .benefit:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-soft);
+      background: var(--card-hover);
+    }
+
+    .spinaok-page .benefit-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--accent-light), #ffffff);
+      border: 1px solid rgba(104, 155, 134, 0.25);
+      margin-bottom: 18px;
+      font-size: 26px;
+      box-shadow: 0 8px 20px rgba(104, 155, 134, 0.16);
+      transition: transform 0.35s ease;
+    }
+
+    .spinaok-page .benefit:hover .benefit-icon {
+      transform: scale(1.1) rotate(-5deg);
+    }
+
+    .spinaok-page .benefit h3 {
+      margin-bottom: 8px;
+      font-size: 20px;
+    }
+
+    .spinaok-page .benefit p {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    /* =========================================================
+       4.1 ПРОБЛЕМА — РЕШЕНИЕ + ИНТЕРАКТИВНЫЙ КАЛЬКУЛЯТОР ЗОН ТЕЛА
+    ========================================================== */
+    .spinaok-page .problem-solution {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: stretch;
+      margin-bottom: 36px;
+    }
+
+    .spinaok-page .ps-card {
+      border-radius: 28px;
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
+      transition: var(--transition);
+    }
+
+    .spinaok-page .ps-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .spinaok-page .ps-card h3 {
+      font-size: 28px;
+      margin: 12px 0 12px;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .spinaok-page .ps-list {
+      list-style: none;
+      display: grid;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .spinaok-page .ps-list li {
+      display: flex;
+      gap: 12px;
+      color: var(--text);
+      font-weight: 500;
+      align-items: center;
+      padding: 10px 14px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.55);
+    }
+
+    .spinaok-page .ps-list li span {
+      min-width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .spinaok-page .problem .ps-list li span {
+      background: rgba(234, 215, 207, 0.9);
+      color: #8f5645;
+    }
+
+    .spinaok-page .solution .ps-list li span {
+      background: var(--accent-light);
+      color: var(--accent-dark);
+    }
+
+    .spinaok-page .solution {
+      border: 1.5px solid rgba(104, 155, 134, 0.38);
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.85), rgba(216, 236, 227, 0.45));
+    }
+
+    /* Интерактивный блок: Подбор массажа по ощущениям */
+    .spinaok-page .Interactive-diagnostic {
+      padding: 34px;
+      border-radius: 30px;
+      border: 1px solid rgba(201, 164, 97, 0.35);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(249, 246, 240, 0.82));
+    }
+
+    .spinaok-page .diag-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .spinaok-page .diag-header h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      margin-top: 8px;
+    }
+
+    .spinaok-page .zone-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .spinaok-page .zone-btn {
+      padding: 12px 20px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(104, 155, 134, 0.28);
+      color: var(--text);
+      font-weight: 700;
+      font-size: 14.5px;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .spinaok-page .zone-btn:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .spinaok-page .zone-btn.active {
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+      color: #fff;
+      border-color: transparent;
+      box-shadow: var(--shadow-glow);
+    }
+
+    .spinaok-page .zone-result {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      padding: 24px 28px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(104, 155, 134, 0.22);
+      transition: var(--transition);
+    }
+
+    .spinaok-page .zone-result-info h4 {
+      font-size: 22px;
+      color: var(--accent-dark);
+      margin-bottom: 6px;
+    }
+
+    .spinaok-page .zone-result-info p {
+      color: var(--muted);
+      font-size: 15.5px;
+      margin-bottom: 10px;
+    }
+
+    .spinaok-page .zone-result-meta {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    /* =========================================================
+       5. УСЛУГИ С ФИЛЬТРАЦИЕЙ
+    ========================================================== */
+    .spinaok-page .services-filters {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+
+    .spinaok-page .filter-btn {
+      padding: 11px 22px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(104, 155, 134, 0.24);
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 14px;
+      transition: var(--transition);
+    }
+
+    .spinaok-page .filter-btn:hover {
+      color: var(--text);
+      background: #fff;
+    }
+
+    .spinaok-page .filter-btn.active {
+      background: var(--text);
+      color: #fff;
+      border-color: var(--text);
+      box-shadow: 0 8px 20px rgba(30, 52, 44, 0.2);
+    }
+
+    .spinaok-page .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .spinaok-page .service-card {
+      position: relative;
+      padding: 30px 26px;
+      border-radius: 28px;
+      transition: var(--transition);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .spinaok-page .service-card.hidden-card {
+      display: none;
+    }
+
+    .spinaok-page .service-card::after {
+      content: "";
+      position: absolute;
+      right: -60px;
+      bottom: -60px;
+      width: 170px;
+      height: 170px;
+      background: radial-gradient(circle, rgba(104, 155, 134, 0.16), transparent 70%);
+      pointer-events: none;
+    }
+
+    .spinaok-page .service-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-soft);
+      background: var(--card-hover);
+    }
+
+    .spinaok-page .service-card.popular {
+      border: 1.5px solid rgba(201, 164, 97, 0.55);
+      box-shadow: 0 18px 42px rgba(201, 164, 97, 0.16);
+    }
+
+    .spinaok-page .service-badge {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 7px 13px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(201, 164, 97, 0.22), rgba(201, 164, 97, 0.35));
+      color: #785720;
+      z-index: 2;
+    }
+
+    .spinaok-page .service-card h3 {
+      font-size: 23px;
+      margin-bottom: 12px;
+      padding-right: 92px;
+      position: relative;
+      z-index: 1;
+      line-height: 1.25;
+    }
+
+    .spinaok-page .service-meta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .spinaok-page .service-card p {
+      color: var(--muted);
+      margin-bottom: 22px;
+      min-height: 72px;
+      position: relative;
+      z-index: 1;
+      font-size: 15px;
+    }
+
+    .spinaok-page .service-price {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(104, 155, 134, 0.18);
+      position: relative;
+      z-index: 1;
+    }
+
+    .spinaok-page .service-price strong {
+      font-size: 25px;
+      color: var(--accent-dark);
+      white-space: nowrap;
+      font-family: 'Playfair Display', serif;
+    }
+
+    /* =========================================================
+       5.1 СКИДКА 24 ЧАСА
+    ========================================================== */
+    .spinaok-page .offer-banner {
+      display: grid;
+      grid-template-columns: 1.22fr 0.78fr;
+      gap: 28px;
+      align-items: center;
+      padding: 38px;
+      border-radius: 34px;
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(216, 236, 227, 0.78)),
+        radial-gradient(circle at right, rgba(201, 164, 97, 0.25), transparent 40%);
+      border: 1.5px solid rgba(201, 164, 97, 0.4);
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .spinaok-page .offer-banner h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 3.4vw, 44px);
+      line-height: 1.12;
+      margin: 14px 0 14px;
+    }
+
+    .spinaok-page .offer-banner p {
+      color: var(--muted);
+      font-size: 16px;
+      max-width: 760px;
+    }
+
+    .spinaok-page .timer-card {
+      padding: 28px 24px;
+      border-radius: 26px;
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(201, 164, 97, 0.35);
+      text-align: center;
+      box-shadow: 0 16px 36px rgba(30, 52, 44, 0.08);
+    }
+
+    .spinaok-page .timer {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin: 18px 0 22px;
+      flex-wrap: wrap;
+    }
+
+    .spinaok-page .time-box {
+      min-width: 78px;
+      padding: 14px 10px;
+      border-radius: 18px;
+      background: linear-gradient(145deg, rgba(104, 155, 134, 0.14), rgba(201, 164, 97, 0.12));
+      border: 1px solid rgba(104, 155, 134, 0.22);
+      color: var(--accent-dark);
+    }
+
+    .spinaok-page .time-box strong {
+      display: block;
+      font-size: 30px;
+      line-height: 1;
+      font-family: 'Playfair Display', serif;
+      margin-bottom: 4px;
+    }
+
+    .spinaok-page .time-box span {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* =========================================================
+       6. КОМАНДА
+    ========================================================== */
+    .spinaok-page .team-grid {
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .spinaok-page .team-card {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      max-width: 920px;
+      width: 100%;
+      border-radius: 32px;
+      overflow: hidden;
+      transition: var(--transition);
+      align-items: stretch;
+    }
+
+    .spinaok-page .team-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .spinaok-page .team-photo-wrap {
+      background: linear-gradient(145deg, rgba(216, 236, 227, 0.55), rgba(234, 215, 207, 0.45));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 22px;
+      position: relative;
+    }
+
+    .spinaok-page .photo-rounded-frame {
+      display: inline-flex;
+      border-radius: 22px;
+      overflow: hidden;
+      border: 2px solid rgba(255, 255, 255, 0.82);
+      box-shadow: 0 12px 28px rgba(30, 52, 44, 0.14);
+      max-width: 100%;
+      background: #14221d;
+    }
+
+    .spinaok-page .team-photo-img {
+      width: auto;
+      max-width: 100%;
+      height: auto;
+      max-height: 500px;
+      display: block;
+      border-radius: 20px;
+    }
+
+    /* =========================================================
+       6.1 АТМОСФЕРА И ГАЛЕРЕЯ СТУДИИ (ФОТО + ВИДЕО)
+    ========================================================== */
+    .spinaok-page .gallery-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .spinaok-page .gallery-card {
+      padding: 24px;
+      border-radius: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: var(--transition);
+    }
+
+    .spinaok-page .gallery-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-soft);
+      background: var(--card-hover);
+    }
+
+    .spinaok-page .gallery-media {
+      position: relative;
+      width: 100%;
+      border-radius: 22px;
+      overflow: hidden;
+      background: linear-gradient(145deg, rgba(216, 236, 227, 0.45), rgba(234, 215, 207, 0.38));
+      box-shadow: 0 12px 28px rgba(30, 52, 44, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .spinaok-page .gallery-media-photo {
+      padding: 18px;
+      min-height: 440px;
+    }
+
+    .spinaok-page .gallery-media-photo img {
+      width: auto;
+      max-width: 100%;
+      height: auto;
+      max-height: 500px;
+      display: block;
+      border-radius: 20px;
+      transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .spinaok-page .gallery-card:hover .gallery-media-photo img {
+      transform: scale(1.03);
+    }
+
+    .spinaok-page .gallery-media-vertical {
+      width: 100%;
+      max-width: 310px;
+      aspect-ratio: 9 / 16;
+      margin: 0 auto;
+      background: #14221d;
+      border: 2px solid rgba(255, 255, 255, 0.75);
+    }
+
+    .spinaok-page .gallery-media-vertical iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    .spinaok-page .gallery-caption {
+      padding: 18px 8px 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .spinaok-page .gallery-caption h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      color: var(--text);
+    }
+
+    .spinaok-page .gallery-caption p {
+      width: 100%;
+      color: var(--muted);
+      font-size: 14.5px;
+      margin-top: 2px;
+    }
+
+    .spinaok-page .team-info {
+      padding: 36px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .spinaok-page .team-info h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      margin-bottom: 6px;
+    }
+
+    .spinaok-page .team-role {
+      color: var(--accent-dark);
+      font-weight: 700;
+      font-size: 16px;
+      margin-bottom: 14px;
+    }
+
+    .spinaok-page .team-info p {
+      color: var(--muted);
+      margin-bottom: 20px;
+      font-size: 16px;
+    }
+
+    .spinaok-page .team-tags {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* =========================================================
+       7. ЗАПИСЬ + СВОБОДНЫЕ ОКНА
+    ========================================================== */
+    .spinaok-page .booking-wrap {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      align-items: stretch;
+      flex-wrap: wrap;
+    }
+
+    .spinaok-page .booking-card,
+    .spinaok-page .slots-card {
+      flex: 1 1 480px;
+      max-width: 580px;
+      padding: 34px 30px;
+      border-radius: 28px;
+    }
+
+    .spinaok-page .booking-card {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .spinaok-page .booking-card .btn {
+      margin: 0 auto;
+    }
+
+    .spinaok-page .booking-list {
+      list-style: none;
+      display: grid;
+      gap: 14px;
+      margin: 22px auto 26px;
+      text-align: left;
+      max-width: 380px;
+      width: 100%;
+    }
+
+    .spinaok-page .booking-list li {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      color: var(--text);
+      font-weight: 500;
+      font-size: 15px;
+      padding: 12px 16px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.66);
+      border: 1px solid rgba(104, 155, 134, 0.16);
+    }
+
+    .spinaok-page .booking-list li span {
+      min-width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .spinaok-page .booking-card h3,
+    .spinaok-page .slots-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 30px;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .spinaok-page .slots-note {
+      text-align: center;
+      color: var(--muted);
+      font-size: 15px;
+      margin-bottom: 20px;
+    }
+
+    .spinaok-page .slots-list {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .spinaok-page .slot-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      padding: 15px 18px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(104, 155, 134, 0.18);
+      transition: var(--transition);
+    }
+
+    .spinaok-page .slot-item:hover {
+      transform: translateX(4px);
+      border-color: var(--accent);
+      background: #fff;
+    }
+
+    .spinaok-page .slot-item strong {
+      color: var(--accent-dark);
+    }
+
+    .spinaok-page .slot-item span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .spinaok-page .slots-actions {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* =========================================================
+       8. СЕРТИФИКАТЫ (С 3D TILT И КОНФЕТТИ)
+    ========================================================== */
+    .spinaok-page .cert-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    .spinaok-page .cert-form,
+    .spinaok-page .cert-preview-wrap {
+      padding: 32px;
+      border-radius: 30px;
+    }
+
+    .spinaok-page .form-grid {
+      display: grid;
+      gap: 15px;
+    }
+
+    .spinaok-page .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .spinaok-page .input,
+    .spinaok-page .select,
+    .spinaok-page .textarea {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(104, 155, 134, 0.26);
+      background: rgba(255, 255, 255, 0.88);
+      color: var(--text);
+      font-size: 15px;
+      outline: none;
+      transition: var(--transition);
+      font-family: inherit;
+    }
+
+    .spinaok-page .input:focus,
+    .spinaok-page .select:focus,
+    .spinaok-page .textarea:focus {
+      border-color: var(--accent);
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(104, 155, 134, 0.14);
+    }
+
+    .spinaok-page .textarea {
+      min-height: 96px;
+      resize: vertical;
+    }
+
+    .spinaok-page .field-label {
+      font-weight: 700;
+      color: var(--accent-dark);
+      margin-bottom: -4px;
+      font-size: 14px;
+    }
+
+    .spinaok-page .quick-messages {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .spinaok-page .quick-message {
+      padding: 8px 13px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(104, 155, 134, 0.24);
+      color: var(--accent-dark);
+      font-weight: 700;
+      font-size: 13px;
+      transition: var(--transition);
+    }
+
+    .spinaok-page .quick-message:hover {
+      background: var(--accent-light);
+      transform: translateY(-2px);
+    }
+
+    .spinaok-page .background-options {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .spinaok-page .bg-option {
+      min-height: 74px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 2px solid transparent;
+      transition: var(--transition);
+      position: relative;
+      background-size: cover;
+      background-position: center;
+      cursor: pointer;
+    }
+
+    .spinaok-page .bg-option:hover {
+      transform: translateY(-2px);
+    }
+
+    .spinaok-page .bg-option.active {
+      border-color: var(--accent-dark);
+      box-shadow: 0 0 0 4px rgba(104, 155, 134, 0.2);
+    }
+
+    .spinaok-page .bg-option::after {
+      content: attr(data-name);
+      position: absolute;
+      inset: auto 6px 6px 6px;
+      padding: 4px 6px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.85);
+      color: var(--accent-dark);
+      font-size: 11px;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .spinaok-page .cert-preview {
+      position: relative;
+      min-height: 450px;
+      border-radius: 28px;
+      overflow: hidden;
+      padding: 34px;
+      background: #689b86;
+      box-shadow: 0 22px 50px rgba(24, 48, 38, 0.24);
+      isolation: isolate;
+      transition: transform 0.25s ease-out, box-shadow 0.25s ease-out;
+      transform-style: preserve-3d;
+    }
+
+    .spinaok-page .cert-bg-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background:
+        radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.52), transparent 26%),
+        radial-gradient(circle at 82% 20%, rgba(217, 235, 227, 0.85), transparent 24%),
+        linear-gradient(135deg, #5c8e79 0%, #9ec2b2 52%, #e5ded2 100%);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      transform: scale(1.02);
+    }
+
+    .spinaok-page .cert-preview::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(135deg, rgba(16, 32, 27, 0.22), rgba(16, 32, 27, 0.45)),
+        radial-gradient(circle at 78% 78%, rgba(201, 164, 97, 0.28), transparent 36%);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .spinaok-page .cert-preview::before {
+      content: "";
+      position: absolute;
+      inset: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      border-radius: 22px;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .spinaok-page .cert-content {
+      position: relative;
+      z-index: 5;
+      min-height: 382px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: #fff;
+    }
+
+    .spinaok-page .cert-top small {
+      display: block;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      opacity: 0.92;
+      margin-bottom: 8px;
+      font-weight: 600;
+      font-size: 12px;
+    }
+
+    .spinaok-page .cert-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 42px;
+      line-height: 1.05;
+      margin-bottom: 10px;
+    }
+
+    .spinaok-page .cert-value {
+      display: inline-block;
+      margin: 8px 0 16px;
+      padding: 9px 18px;
+      border: 1px solid rgba(255, 255, 255, 0.55);
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 18px;
+      background: rgba(255, 255, 255, 0.16);
+      backdrop-filter: blur(6px);
+    }
+
+    .spinaok-page .cert-box {
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(6px);
+      padding: 14px 16px;
+      border-radius: 16px;
+      margin-top: 10px;
+      font-size: 14.5px;
+    }
+
+    .spinaok-page .certificate-help {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 14px;
+      text-align: center;
+    }
+
+    /* =========================================================
+       9. ОТЗЫВЫ
+    ========================================================== */
+    .spinaok-page .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .spinaok-page .review {
+      padding: 28px;
+      border-radius: 26px;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .spinaok-page .review:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-soft);
+      background: var(--card-hover);
+    }
+
+    .spinaok-page .stars {
+      color: var(--gold);
+      margin-bottom: 14px;
+      letter-spacing: 3px;
+      font-size: 18px;
+    }
+
+    .spinaok-page .review p {
+      color: var(--text);
+      margin-bottom: 18px;
+      font-size: 15.5px;
+      font-style: italic;
+    }
+
+    .spinaok-page .review-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .spinaok-page .review-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-light), var(--rose));
+      color: var(--accent-dark);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 16px;
+    }
+
+    .spinaok-page .review-source {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    /* =========================================================
+       10. FAQ
+    ========================================================== */
+    .spinaok-page .faq {
+      display: grid;
+      gap: 14px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .spinaok-page .faq-item {
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(104, 155, 134, 0.2);
+      background: rgba(255, 255, 255, 0.78);
+      transition: var(--transition);
+    }
+
+    .spinaok-page .faq-item.active {
+      background: #fff;
+      border-color: var(--accent);
+      box-shadow: 0 12px 30px rgba(30, 52, 44, 0.08);
+    }
+
+    .spinaok-page .faq-q {
+      width: 100%;
+      text-align: left;
+      padding: 20px 24px;
+      background: transparent;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .spinaok-page .faq-q span {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      display: grid;
+      place-items: center;
+      font-size: 20px;
+      transition: var(--transition);
+      flex-shrink: 0;
+    }
+
+    .spinaok-page .faq-item.active .faq-q span {
+      transform: rotate(45deg);
+      background: var(--accent-dark);
+      color: #fff;
+    }
+
+    .spinaok-page .faq-a {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.38s ease, padding 0.38s ease;
+      padding: 0 24px;
+      color: var(--muted);
+    }
+
+    .spinaok-page .faq-item.active .faq-a {
+      max-height: 320px;
+      padding: 0 24px 22px;
+    }
+
+    /* =========================================================
+       11. КОНТАКТЫ + 12. FOOTER
+    ========================================================== */
+    .spinaok-page .contacts-section {
+      margin-top: 20px;
+      margin-bottom: 24px;
+    }
+
+    .spinaok-page .contacts-block {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-radius: 32px;
+      padding: 40px 28px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 255, 255, 0.75);
+    }
+
+    .spinaok-page .contacts-block h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      margin-bottom: 20px;
+      color: var(--accent-dark);
+    }
+
+    .spinaok-page .contacts-details {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      align-items: center;
+      font-size: 18px;
+    }
+
+    .spinaok-page .contacts-details p {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .spinaok-page .social-links {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    .spinaok-page .social-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 11px 22px;
+      border-radius: 40px;
+      background: rgba(104, 155, 134, 0.14);
+      color: var(--accent-dark);
+      font-weight: 700;
+      font-size: 15px;
+      transition: var(--transition);
+      border: 1px solid rgba(104, 155, 134, 0.28);
+    }
+
+    .spinaok-page .social-link:hover {
+      background: var(--accent-dark);
+      color: #fff;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 22px rgba(70, 115, 96, 0.26);
+    }
+
+    .spinaok-page .phone-number {
+      font-weight: 800;
+      font-size: 21px;
+      color: var(--accent-dark);
+    }
+
+    .spinaok-page footer {
+      padding: 30px 0 64px;
+      color: var(--muted);
+      position: relative;
+      z-index: 2;
+    }
+
+    .spinaok-page .footer-box {
+      padding: 28px 32px;
+      border-radius: 26px;
+      display: flex;
+      justify-content: space-between;
+      gap: 22px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    /* =========================================================
+       13. ПЛАВАЮЩИЕ ЭЛЕМЕНТЫ И УВЕДОМЛЕНИЯ (TOAST)
+    ========================================================== */
+    .spinaok-page .floating-book-btn {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 999;
+      border-radius: 999px;
+      padding: 16px 24px;
+      box-shadow: 0 14px 32px rgba(70, 115, 96, 0.42);
+    }
+
+    .spinaok-page .music-toggle {
+      position: fixed;
+      left: 22px;
+      bottom: 22px;
+      z-index: 999;
+      height: 54px;
+      padding: 0 18px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(104, 155, 134, 0.3);
+      box-shadow: var(--shadow);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 13.5px;
+      color: var(--accent-dark);
+      transition: var(--transition);
+    }
+
+    .spinaok-page .music-toggle:hover {
+      transform: translateY(-2px);
+      background: #fff;
+    }
+
+    .spinaok-page .eq-bars {
+      display: inline-flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 16px;
+    }
+
+    .spinaok-page .eq-bars span {
+      width: 3px;
+      height: 5px;
+      border-radius: 2px;
+      background: var(--accent-dark);
+      transition: height 0.2s ease;
+    }
+
+    .spinaok-page .music-toggle.playing .eq-bars span:nth-child(1) {
+      animation: spk-eq 0.8s ease-in-out infinite;
+    }
+    .spinaok-page .music-toggle.playing .eq-bars span:nth-child(2) {
+      animation: spk-eq 0.8s ease-in-out 0.2s infinite;
+    }
+    .spinaok-page .music-toggle.playing .eq-bars span:nth-child(3) {
+      animation: spk-eq 0.8s ease-in-out 0.4s infinite;
+    }
+
+    @keyframes spk-eq {
+      0%, 100% { height: 4px; }
+      50% { height: 16px; }
+    }
+
+    /* Красивое всплывающее уведомление вместо стандартного alert */
+    .spinaok-page .spk-toast {
+      position: fixed;
+      bottom: 90px;
+      right: 22px;
+      z-index: 3000;
+      padding: 14px 20px;
+      border-radius: 18px;
+      background: rgba(30, 45, 39, 0.94);
+      color: #fff;
+      font-size: 14.5px;
+      font-weight: 600;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22);
+      transform: translateY(20px);
+      opacity: 0;
+      pointer-events: none;
+      transition: var(--transition);
+    }
+
+    .spinaok-page .spk-toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* =========================================================
+       14. MODAL DIKIDI
+    ========================================================== */
+    .spinaok-page .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(19, 31, 27, 0.55);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      padding: 16px;
+    }
+
+    .spinaok-page .modal.active {
+      display: flex;
+    }
+
+    .spinaok-page .modal-content {
+      width: min(1160px, 100%);
+      height: min(88vh, 840px);
+      background: #fff;
+      border-radius: 26px;
+      overflow: hidden;
+      box-shadow: 0 26px 70px rgba(0, 0, 0, 0.28);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .spinaok-page .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 22px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      background: #f8faf9;
+    }
+
+    .spinaok-page .modal-header h3 {
+      font-size: 18px;
+    }
+
+    .spinaok-page .modal-close {
+      min-width: 40px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #e9f2ee;
+      font-size: 22px;
+      color: var(--text);
+      transition: var(--transition);
+    }
+
+    .spinaok-page .modal-close:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .spinaok-page .modal-body {
+      flex: 1;
+      background: #fff;
+    }
+
+    .spinaok-page .modal-body iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* =========================================================
+       15. АДАПТИВ
+    ========================================================== */
+    @media (max-width: 1100px) {
+      .spinaok-page .hero-grid,
+      .spinaok-page .benefits-grid,
+      .spinaok-page .services-grid,
+      .spinaok-page .cert-grid,
+      .spinaok-page .reviews-grid,
+      .spinaok-page .stats-strip {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .spinaok-page .problem-solution,
+      .spinaok-page .offer-banner,
+      .spinaok-page .team-card,
+      .spinaok-page .gallery-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .spinaok-page .hero-visual {
+        min-height: 440px;
+      }
+    }
+
+    @media (max-width: 820px) {
+      .spinaok-page .section {
+        padding: 64px 0;
+      }
+
+      .spinaok-page .nav {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 14px;
+      }
+
+      .spinaok-page .hero-grid,
+      .spinaok-page .benefits-grid,
+      .spinaok-page .services-grid,
+      .spinaok-page .cert-grid,
+      .spinaok-page .reviews-grid,
+      .spinaok-page .form-row,
+      .spinaok-page .problem-solution,
+      .spinaok-page .stats-strip {
+        grid-template-columns: 1fr;
+      }
+
+      .spinaok-page .zone-result {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .spinaok-page .background-options {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .spinaok-page .hero-card {
+        padding: 26px;
+      }
+
+      .spinaok-page .hero-visual {
+        min-height: 360px;
+      }
+
+      .spinaok-page .floating-3 {
+        display: none;
+      }
+
+      .spinaok-page .service-price {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .spinaok-page .service-price .btn {
+        width: 100%;
+      }
+
+      .spinaok-page .floating-book-btn {
+        right: 14px;
+        bottom: 14px;
+        padding: 13px 18px;
+        font-size: 14px;
+      }
+
+      .spinaok-page .music-toggle {
+        left: 14px;
+        bottom: 14px;
+        height: 46px;
+        padding: 0 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     СПИНА'ОК — студия массажа. Код для вставки в Tilda (блок T123)
+     ============================================================ -->
+<div class="spinaok-page" id="spinaokTop">
+
+  <!-- Полоса прогресса чтения -->
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <!-- Интерактивный Canvas с золотыми SPA-частицами -->
+  <canvas class="ambient-canvas" id="ambientCanvas"></canvas>
+
+  <!-- Мягкие фоновые световые сферы -->
+  <div class="ambient-orb orb-1"></div>
+  <div class="ambient-orb orb-2"></div>
+  <div class="ambient-orb orb-3"></div>
+
+  <!-- Кнопка расслабляющей SPA-атмосферы (генеративный Web Audio звук без внешних MP3) -->
+  <button class="music-toggle" id="musicToggle" type="button" aria-label="Включить SPA-звук">
+    <span class="eq-bars"><span></span><span></span><span></span></span>
+    <span id="musicLabel">SPA-звук</span>
+  </button>
+
+  <!-- Всплывающее уведомление -->
+  <div class="spk-toast" id="spkToast" role="status" aria-live="polite"></div>
+
+  <!-- HEADER -->
+  <header class="topbar">
+    <div class="spk-container nav">
+      <a href="#hero" class="logo" aria-label="Спина'ОК — на главную">
+        <img src="https://274418.selcdn.ru/cv08300-33250f0d-0664-43fc-9dbf-9d89738d114e/uploads/100808/d8ac27f0-08f3-4ce3-987c-64127a2c67eb.png" alt="Спина'ОК логотип">
+      </a>
+
+      <nav class="nav-links" aria-label="Основная навигация">
+        <a href="#services">Массажи</a>
+        <a href="#diagnostic">Подбор сеанса</a>
+        <a href="#team">Мастер</a>
+        <a href="#gallery">Атмосфера</a>
+        <a href="#booking">Запись</a>
+        <a href="#certificates">Сертификаты</a>
+        <a href="#reviews">Отзывы</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="#certificates" class="btn btn-secondary">Подарить сертификат</a>
+        <button class="btn btn-primary open-booking" type="button">Записаться</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero section" id="hero">
+    <div class="spk-container">
+      <div class="hero-grid">
+        <div class="hero-card glass spotlight-card fade-up">
+          <span class="pill">🌿 Руки, которые слышат • Руки, которым доверяют</span>
+
+          <h1>Массаж, после которого тело говорит: <span class="shimmer-text">«спасибо»</span></h1>
+
+          <p>
+            Студия «Спина'ОК» — это массаж бизнес-класса рядом с вашим домом. Приём ведёт ведущий массажист фитнес-клуба бизнес-класса Drive Black, чтобы улучшить самочувствие и вернуть лёгкость в теле. Запишитесь онлайн — выберите услугу и удобное время.
+          </p>
+
+          <div class="hero-actions">
+            <button class="btn btn-primary open-booking" type="button">Записаться на сеанс</button>
+            <a href="#services" class="btn btn-secondary">Выбрать массаж</a>
+          </div>
+
+          <div class="hero-badges">
+            <span class="pill pill-gold">⭐ 4.9 по отзывам</span>
+            <span class="pill">🕯️ SPA-атмосфера</span>
+            <span class="pill">👨‍⚕️ Опыт 7+ лет</span>
+          </div>
+        </div>
+
+        <div class="hero-visual-wrap fade-up">
+          <div class="hero-orbit"></div>
+          <div class="hero-visual" id="heroVisual">
+            <div class="floating-card floating-1">
+              <strong>✨ Скидка 10%</strong>
+              <span>на курс от 6 ручных массажей для устойчивого результата</span>
+            </div>
+
+            <div class="floating-card floating-3">
+              <span class="pulse-dot"></span>
+              <span style="font-weight:700; color:var(--text);">Есть окна на этой неделе</span>
+            </div>
+
+            <div class="floating-card floating-2">
+              <strong>📅 Онлайн-запись 24/7</strong>
+              <span>Свободные окна в Dikidi или через удобный мессенджер</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Анимированные счётчики доверия -->
+      <div class="stats-strip fade-up">
+        <div class="stat-card glass spotlight-card">
+          <div class="stat-num" data-target="7" data-suffix="+ лет">7+ лет</div>
+          <div class="stat-label">профессиональной практики</div>
+        </div>
+        <div class="stat-card glass spotlight-card">
+          <div class="stat-num" data-target="2500" data-suffix="+">2500+</div>
+          <div class="stat-label">проведённых сеансов массажа</div>
+        </div>
+        <div class="stat-card glass spotlight-card">
+          <div class="stat-num" data-target="98" data-suffix="%">98%</div>
+          <div class="stat-label">гостей возвращаются на курс</div>
+        </div>
+        <div class="stat-card glass spotlight-card">
+          <div class="stat-num">4.9 ★</div>
+          <div class="stat-label">средняя оценка гостей студии</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- БЕГУЩАЯ СТРОКА С АКЦЕНТАМИ -->
+  <div class="marquee-bar" aria-hidden="true">
+    <div class="marquee-track">
+      <span class="marquee-item"><i class="fas fa-spa"></i> Глубокая проработка триггерных точек</span>
+      <span class="marquee-item"><i class="fas fa-star"></i> Ведущий мастер фитнес-клуба Drive Black</span>
+      <span class="marquee-item"><i class="fas fa-leaf"></i> Премиальные гипоаллергенные масла</span>
+      <span class="marquee-item"><i class="fas fa-gift"></i> Именные подарочные сертификаты онлайн</span>
+      <span class="marquee-item"><i class="fas fa-heart"></i> Бережное восстановление спины и шеи</span>
+      <span class="marquee-item"><i class="fas fa-spa"></i> Глубокая проработка триггерных точек</span>
+      <span class="marquee-item"><i class="fas fa-star"></i> Ведущий мастер фитнес-клуба Drive Black</span>
+      <span class="marquee-item"><i class="fas fa-leaf"></i> Премиальные гипоаллергенные масла</span>
+      <span class="marquee-item"><i class="fas fa-gift"></i> Именные подарочные сертификаты онлайн</span>
+      <span class="marquee-item"><i class="fas fa-heart"></i> Бережное восстановление спины и шеи</span>
+    </div>
+  </div>
+
+  <!-- ПРЕИМУЩЕСТВА -->
+  <section class="section">
+    <div class="spk-container">
+      <div class="section-eyebrow fade-up"><span class="pill">✨ Философия заботы</span></div>
+      <h2 class="section-title fade-up">Почему выбирают <em>Спина'ОК</em></h2>
+      <p class="section-subtitle fade-up">
+        Здесь создаётся не просто массаж, а полноценный ритуал заботы о теле, мышцах и нервной системе.
+      </p>
+
+      <div class="benefits-grid">
+        <div class="benefit glass spotlight-card fade-up">
+          <div class="benefit-icon">🌿</div>
+          <h3>Спокойная атмосфера</h3>
+          <p>Тёплый свет, натуральные оттенки, ароматы и музыка помогают переключиться и расслабиться.</p>
+        </div>
+
+        <div class="benefit glass spotlight-card fade-up">
+          <div class="benefit-icon">🤝</div>
+          <h3>Индивидуальный подход</h3>
+          <p>Подбираем силу, технику и длительность процедуры под ваш запрос и самочувствие.</p>
+        </div>
+
+        <div class="benefit glass spotlight-card fade-up">
+          <div class="benefit-icon">💪</div>
+          <h3>Польза для тела</h3>
+          <p>Работаем с мышечными зажимами, усталостью, скованностью и восстановлением после нагрузок.</p>
+        </div>
+
+        <div class="benefit glass spotlight-card fade-up">
+          <div class="benefit-icon">📅</div>
+          <h3>Удобная запись</h3>
+          <p>Онлайн-бронирование без звонков: выберите услугу и комфортное время посещения.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ПРОБЛЕМА — РЕШЕНИЕ + ИНТЕРАКТИВНЫЙ ПОДБОР ПО ЗОНАМ -->
+  <section class="section" id="diagnostic">
+    <div class="spk-container">
+      <div class="section-eyebrow fade-up"><span class="pill">🌱 Диагностика ощущений</span></div>
+      <h2 class="section-title fade-up">Когда телу <em>нужен массаж?</em></h2>
+      <p class="section-subtitle fade-up">
+        Если вы давно откладываете заботу о себе — возможно, тело уже подаёт сигналы.
+      </p>
+
+      <div class="problem-solution">
+        <div class="ps-card glass spotlight-card problem fade-up">
+          <span class="pill">😣 Проблема</span>
+          <h3>Напряжение копится незаметно</h3>
+          <p class="text-muted">
+            Сидячая работа, стресс, тренировки, недосып и постоянная спешка часто приводят к зажимам, усталости и ощущению тяжести в теле.
+          </p>
+
+          <ul class="ps-list">
+            <li><span>!</span> Тянет шею, плечи или поясницу</li>
+            <li><span>!</span> Тело устаёт даже без сильной нагрузки</li>
+            <li><span>!</span> Сложно расслабиться и восстановиться</li>
+            <li><span>!</span> Появляется скованность после рабочего дня</li>
+          </ul>
+        </div>
+
+        <div class="ps-card glass spotlight-card solution fade-up">
+          <span class="pill">🌱 Решение</span>
+          <h3>Бережная работа с телом</h3>
+          <p class="text-muted">
+            Массаж помогает снять мышечное напряжение, улучшить кровообращение, вернуть ощущение лёгкости и дать нервной системе сигнал: можно выдохнуть.
+          </p>
+
+          <ul class="ps-list">
+            <li><span>✓</span> Подбираем технику под ваш запрос</li>
+            <li><span>✓</span> Прицельно работаем с зонами напряжения</li>
+            <li><span>✓</span> Помогаем восстановиться после нагрузки</li>
+            <li><span>✓</span> Рекомендуем курс для устойчивого эффекта</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Интерактивный навигатор по симптомам -->
+      <div class="Interactive-diagnostic glass spotlight-card fade-up">
+        <div class="diag-header">
+          <span class="pill pill-gold">🎯 Интерактивный подбор за 5 секунд</span>
+          <h3>Что беспокоит вас прямо сейчас?</h3>
+        </div>
+
+        <div class="zone-tabs" id="zoneTabs">
+          <button type="button" class="zone-btn active" data-zone="back">⚡ Зажимы в спине и шее</button>
+          <button type="button" class="zone-btn" data-zone="fatigue">🌊 Хроническая усталость</button>
+          <button type="button" class="zone-btn" data-zone="sport">🏋️ Мышцы после спорта</button>
+          <button type="button" class="zone-btn" data-zone="tone">✨ Коррекция фигуры и тонус</button>
+        </div>
+
+        <div class="zone-result" id="zoneResultCard">
+          <div class="zone-result-info">
+            <h4 id="zoneRecTitle">Рекомендуем: Классический массаж спины</h4>
+            <p id="zoneRecDesc">Прицельная проработка шейно-воротниковой зоны, грудного отдела и поясницы. Убирает скованность от сидячей работы уже после 1 сеанса.</p>
+            <div class="zone-result-meta">
+              <span class="pill" id="zoneRecDuration">⏱ 40 минут</span>
+              <span class="pill pill-gold" id="zoneRecPrice">💳 2 000 ₽</span>
+            </div>
+          </div>
+          <button class="btn btn-primary open-booking" type="button">Записаться на эту программу</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- УСЛУГИ -->
+  <section class="section" id="services">
+    <div class="spk-container">
+      <div class="section-eyebrow fade-up"><span class="pill">💆 Прайс-лист студии</span></div>
+      <h2 class="section-title fade-up">Виды массажа и <em>цены</em></h2>
+      <p class="section-subtitle fade-up">
+        В студии «Спина'ОК» вы можете выбрать расслабляющие, оздоровительные и восстановительные программы.
+      </p>
+
+      <!-- Фильтры программ -->
+      <div class="services-filters fade-up" id="serviceFilters">
+        <button type="button" class="filter-btn active" data-filter="all">Все программы (6)</button>
+        <button type="button" class="filter-btn" data-filter="single">Разовые сеансы</button>
+        <button type="button" class="filter-btn" data-filter="course">Выгодные курсы −10%</button>
+      </div>
+
+      <div class="services-grid" id="servicesGrid">
+        <article class="service-card glass spotlight-card fade-up" data-category="single">
+          <div>
+            <span class="service-badge">Хит</span>
+            <h3>Общий разминающий массаж</h3>
+            <div class="service-meta">
+              <span class="pill">60 минут</span>
+              <span class="pill">Глубокое разминание</span>
+            </div>
+            <p>Полное разминание тела под потребности клиента. Снимает зажимы, улучшает эластичность мышц и дарит ощущение свободы. Подходит для всех.</p>
+          </div>
+          <div class="service-price">
+            <strong>2 500 ₽</strong>
+            <button class="btn btn-primary open-booking" type="button">Записаться</button>
+          </div>
+        </article>
+
+        <article class="service-card glass spotlight-card popular fade-up" data-category="single">
+          <div>
+            <span class="service-badge">Популярно</span>
+            <h3>Классический массаж спины</h3>
+            <div class="service-meta">
+              <span class="pill">40 минут</span>
+              <span class="pill">Снятие напряжения</span>
+            </div>
+            <p>Подходит при усталости, сидячей работе и ощущении скованности в спине и плечах.</p>
+          </div>
+          <div class="service-price">
+            <strong>2 000 ₽</strong>
+            <button class="btn btn-primary open-booking" type="button">Записаться</button>
+          </div>
+        </article>
+
+        <article class="service-card glass spotlight-card fade-up" data-category="single">
+          <div>
+            <h3>Спортивный массаж</h3>
+            <div class="service-meta">
+              <span class="pill">45 минут</span>
+              <span class="pill">Восстановление</span>
+            </div>
+            <p>Интенсивная техника для снятия мышечного напряжения после тренировок и подготовки к нагрузкам.</p>
+          </div>
+          <div class="service-price">
+            <strong>2 900 ₽</strong>
+            <button class="btn btn-primary open-booking" type="button">Записаться</button>
+          </div>
+        </article>
+
+        <article class="service-card glass spotlight-card fade-up" data-category="single">
+          <div>
+            <span class="service-badge">Хит</span>
+            <h3>Скульптурный массаж</h3>
+            <div class="service-meta">
+              <span class="pill">60 минут</span>
+              <span class="pill">Коррекция</span>
+            </div>
+            <p>Способствует уменьшению объёмов за счёт ручного массажа по жировой ткани и лимфодренажного термообёртывания.</p>
+          </div>
+          <div class="service-price">
+            <strong>3 200 ₽</strong>
+            <button class="btn btn-primary open-booking" type="button">Записаться</button>
+          </div>
+        </article>
+
+        <article class="service-card glass spotlight-card popular fade-up" data-category="course">
+          <div>
+            <span class="service-badge">Курс −10%</span>
+            <h3>Курс из 6 ручных массажей</h3>
+            <div class="service-meta">
+              <span class="pill">6 сеансов</span>
+              <span class="pill">Комплексный уход</span>
+            </div>
+            <p>Стабильный результат и комплексное воздействие на организм. Экономия до 10% по сравнению с разовыми визитами.</p>
+          </div>
+          <div class="service-price">
+            <strong>13 500 ₽</strong>
+            <button class="btn btn-primary open-booking" type="button">Записаться</button>
+          </div>
+        </article>
+
+        <article class="service-card glass spotlight-card fade-up" data-category="course">
+          <div>
+            <span class="service-badge">Курс</span>
+            <h3>Курс из 12 ручных массажей</h3>
+            <div class="service-meta">
+              <span class="pill">12 сеансов</span>
+              <span class="pill">Глубокое восстановление</span>
+            </div>
+            <p>Максимальный эффект для здоровья спины, осанки и общего тонуса. Идеально для комплексной работы с телом.</p>
+          </div>
+          <div class="service-price">
+            <strong>25 000 ₽</strong>
+            <button class="btn btn-primary open-booking" type="button">Записаться</button>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- СКИДКА 24 ЧАСА -->
+  <section class="section">
+    <div class="spk-container">
+      <div class="offer-banner spotlight-card fade-up">
+        <div>
+          <span class="pill pill-gold">🎁 Специальное предложение</span>
+          <h2>Скидка на первый абонемент — всего 24 часа</h2>
+          <p>
+            Один сеанс — это знакомство с телом, но не глубокая работа. Чтобы по-настоящему убрать зажимы, снять напряжение и закрепить результат, мышцам нужна регулярность. Именно поэтому я предлагаю скидку не на разовую запись, а на <strong>абонемент или блок сеансов</strong>.
+            <br><br>
+            За один раз невозможно исправить то, что копилось годами. Прогресс приходит с постоянством — как в фитнесе: желаемую форму не получить за одну тренировку. Мои клиенты уже после первого сеанса чувствуют изменения, а после пятого забывают, что у них вообще что-то болело.
+            <br><br>
+            <strong>Как это работает:</strong> вы можете прийти на первый сеанс прямо сейчас, познакомиться с моей техникой и почувствовать отклик тела. А после — мы вместе составим <strong>персональную программу восстановления</strong> на 6 или 12 сеансов, которая даст устойчивый и глубокий результат.
+          </p>
+        </div>
+
+        <div class="timer-card glass">
+          <strong>До конца предложения:</strong>
+          <div class="timer" aria-label="Таймер акции">
+            <div class="time-box">
+              <strong id="hours">24</strong>
+              <span>часов</span>
+            </div>
+            <div class="time-box">
+              <strong id="minutes">00</strong>
+              <span>минут</span>
+            </div>
+            <div class="time-box">
+              <strong id="seconds">00</strong>
+              <span>секунд</span>
+            </div>
+          </div>
+          <button class="btn btn-gold open-booking" type="button" style="width:100%;">Записаться на первый сеанс</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- КОМАНДА -->
+  <section class="section" id="team">
+    <div class="spk-container">
+      <div class="section-eyebrow fade-up"><span class="pill">👨‍⚕️ Экспертный подход</span></div>
+      <h2 class="section-title fade-up">Наш <em>мастер</em></h2>
+      <p class="section-subtitle fade-up">
+        В студии «Спина'ОК» приём ведёт топ-массажист фитнес-клуба бизнес-класса Drive Black, который умеет слышать тело и работать бережно, профессионально и эффективно.
+      </p>
+
+      <div class="team-grid">
+        <article class="team-card glass spotlight-card fade-up">
+          <div class="team-photo-wrap">
+            <div class="photo-rounded-frame">
+              <img class="team-photo-img" src="https://274418.selcdn.ru/cv08300-33250f0d-0664-43fc-9dbf-9d89738d114e/uploads/100808/86763db1-8511-4afe-ab09-944b3f74d546.jpg" alt="Мастер массажа Виктор — Спина'ОК">
+            </div>
+          </div>
+          <div class="team-info">
+            <span class="pill pill-gold" style="align-self:flex-start; margin-bottom:12px;">Ведущий специалист Drive Black</span>
+            <h3>Виктор</h3>
+            <div class="team-role">Мастер классического, спортивного и скульптурного массажа</div>
+            <p>
+              Моя специализация — ваши мышцы и боли в них. Приём веду в фитнес-клубе и в частном кабинете попеременно. Глубоко работаю с мышечным напряжением, триггерными зонами и восстановлением после физических или офисных нагрузок.
+            </p>
+            <div class="team-tags">
+              <span class="pill">🏆 Опыт 7+ лет</span>
+              <span class="pill">👐 Индивидуальная сила проработки</span>
+              <span class="pill">🌿 Анатомический подход</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ГАЛЕРЕЯ И ВИДЕО СТУДИИ -->
+  <section class="section" id="gallery">
+    <div class="spk-container">
+      <div class="section-eyebrow fade-up"><span class="pill">🕯️ Фото и видео</span></div>
+      <h2 class="section-title fade-up">Атмосфера <em>нашей студии</em></h2>
+      <p class="section-subtitle fade-up">
+        Посмотрите, как устроен наш кабинет изнутри: уютный интерьер, чистота и полное уединение для вашего отдыха.
+      </p>
+
+      <div class="gallery-grid">
+        <article class="gallery-card glass spotlight-card fade-up">
+          <div class="gallery-media gallery-media-photo">
+            <div class="photo-rounded-frame">
+              <img src="https://274418.selcdn.ru/cv08300-33250f0d-0664-43fc-9dbf-9d89738d114e/uploads/100808/c9f6ef52-a9f1-4ef7-a893-a6d2f32e78d3.jpg" alt="Интерьер студии массажа Спина'ОК" loading="lazy">
+            </div>
+          </div>
+          <div class="gallery-caption">
+            <h3>Уютный кабинет студии</h3>
+            <span class="pill">🌿 Комфорт и тишина</span>
+            <p>Тёплый приглушённый свет, чистота и всё необходимое для глубокого расслабления.</p>
+          </div>
+        </article>
+
+        <article class="gallery-card glass spotlight-card fade-up">
+          <div class="gallery-media gallery-media-vertical">
+            <iframe
+              src="https://kinescope.io/embed/7Fbtu7xd79ffUW9e3fJtd8"
+              title="Видеопрезентация кабинета студии массажа Спина'ОК"
+              allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;"
+              allowfullscreen
+              loading="lazy">
+            </iframe>
+          </div>
+          <div class="gallery-caption">
+            <h3>Видеопрезентация кабинета</h3>
+            <span class="pill pill-gold">🎬 Обзор студии</span>
+            <p>Видеопрезентация нашего массажного кабинета — познакомьтесь с уютным интерьером и обстановкой студии ещё до первого визита.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- БЛОК ЗАПИСИ + СВОБОДНЫЕ ОКНА -->
+  <section class="section" id="booking">
+    <div class="spk-container">
+      <div class="section-eyebrow fade-up"><span class="pill">📲 Бронирование визита</span></div>
+      <h2 class="section-title fade-up">Онлайн-запись <em>в пару кликов</em></h2>
+      <p class="section-subtitle fade-up">
+        Выберите удобное время и услугу без звонков и ожидания.
+      </p>
+
+      <div class="booking-wrap">
+        <div class="booking-card glass spotlight-card fade-up">
+          <div>
+            <h3>Запишитесь прямо сейчас</h3>
+            <p style="color:var(--muted);">
+              Онлайн-окно записи открывается прямо на сайте. Удобно сразу выбрать дату и время сеанса.
+            </p>
+
+            <ul class="booking-list">
+              <li><span>1</span> Откройте форму записи Dikidi</li>
+              <li><span>2</span> Выберите программу массажа</li>
+              <li><span>3</span> Подтвердите удобное время визита</li>
+            </ul>
+          </div>
+
+          <button class="btn btn-primary open-booking" type="button">Открыть онлайн-запись</button>
+        </div>
+
+        <div class="slots-card glass spotlight-card fade-up">
+          <h3>Свободные окна</h3>
+          <p class="slots-note">
+            Актуальные окна меняются в течение дня. Проверить наличие времени можно через Dikidi или в мессенджере.
+          </p>
+
+          <div class="slots-list">
+            <div class="slot-item">
+              <div>
+                <strong>Сегодня / завтра</strong><br>
+                <span>быстрая проверка через онлайн-расписание</span>
+              </div>
+              <span>📅</span>
+            </div>
+
+            <div class="slot-item">
+              <div>
+                <strong>Вечерние окна</strong><br>
+                <span>уточняйте в Max, Telegram или WhatsApp</span>
+              </div>
+              <span>💬</span>
+            </div>
+
+            <div class="slot-item">
+              <div>
+                <strong>Лист ожидания</strong><br>
+                <span>сообщим, если освободится удобное время</span>
+              </div>
+              <span>🌿</span>
+            </div>
+          </div>
+
+          <div class="slots-actions">
+            <button class="btn btn-primary open-booking" type="button">Проверить в Dikidi</button>
+            <a href="https://max.ru/u/f9LHodD0cOJVHsVXyAAu9BFSyvQvXv8Nd2-JkojRmoXPUX_Skel8VrPXjHs" target="_blank" rel="noopener" class="btn btn-secondary"><i class="fas fa-comment-dots"></i> Написать в Max</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- СЕРТИФИКАТЫ -->
+  <section class="section" id="certificates">
+    <div class="spk-container">
+      <div class="section-eyebrow fade-up"><span class="pill pill-gold">🎀 Идеальный подарок</span></div>
+      <h2 class="section-title fade-up">Подарочные <em>сертификаты</em></h2>
+      <p class="section-subtitle fade-up">
+        Подарите близкому человеку отдых, заботу и приятное восстановление. Создайте именной сертификат прямо на сайте и скачайте его в высоком качестве.
+      </p>
+
+      <div class="cert-grid">
+        <div class="cert-form glass spotlight-card fade-up">
+          <h3 style="font-size:26px; margin-bottom:18px; font-family:'Playfair Display', serif;">Конструктор сертификата</h3>
+
+          <div class="form-grid">
+            <div class="field-label">1. Заполните имена</div>
+            <div class="form-row">
+              <input class="input" id="fromName" type="text" placeholder="От кого" value="Алексей">
+              <input class="input" id="toName" type="text" placeholder="Кому" value="Елена">
+            </div>
+
+            <div class="field-label">2. Выберите услугу и сумму</div>
+            <div class="form-row">
+              <select class="select" id="certType">
+                <option value="На любую услугу">На любую услугу</option>
+                <option value="Классический массаж спины">Классический массаж спины</option>
+                <option value="Общий проминающий массаж">Общий проминающий массаж</option>
+                <option value="Спортивный массаж">Спортивный массаж</option>
+                <option value="Скульптурный массаж">Скульптурный массаж</option>
+                <option value="Массаж шейно-воротниковой зоны">Массаж шейно-воротниковой зоны</option>
+              </select>
+
+              <select class="select" id="certValueSelect">
+                <option value="2 000 ₽">2 000 ₽</option>
+                <option value="2 500 ₽">2 500 ₽</option>
+                <option value="3 000 ₽" selected>3 000 ₽</option>
+                <option value="5 000 ₽">5 000 ₽</option>
+                <option value="10 000 ₽">10 000 ₽</option>
+                <option value="custom">Своя сумма</option>
+              </select>
+            </div>
+
+            <div id="customAmountContainer" style="display:none;" class="custom-amount-input">
+              <input type="text" id="customAmount" placeholder="Введите сумму, например 4 500 ₽" class="input">
+            </div>
+
+            <div class="field-label">3. Выберите тему оформления</div>
+            <div class="background-options" id="backgroundOptions">
+              <button
+                type="button"
+                class="bg-option active"
+                data-name="SPA Изумруд"
+                data-bg="spa"
+                style="background: radial-gradient(circle at 18% 18%, rgba(255,255,255,.52), transparent 26%), radial-gradient(circle at 82% 20%, rgba(217,235,227,.85), transparent 24%), linear-gradient(135deg, #5c8e79 0%, #9ec2b2 52%, #e5ded2 100%);">
+              </button>
+
+              <button
+                type="button"
+                class="bg-option"
+                data-name="Лесной Шалфей"
+                data-bg="leaves"
+                style="background: radial-gradient(circle at 18% 20%, rgba(255,255,255,.55), transparent 24%), radial-gradient(circle at 80% 22%, rgba(95,141,124,.45), transparent 26%), linear-gradient(135deg, #355c4d 0%, #76a492 50%, #dfeee7 100%);">
+              </button>
+
+              <button
+                type="button"
+                class="bg-option"
+                data-name="Тёплое Золото"
+                data-bg="candles"
+                style="background: radial-gradient(circle at 22% 22%, rgba(255,236,190,.72), transparent 18%), radial-gradient(circle at 75% 28%, rgba(200,170,114,.35), transparent 24%), linear-gradient(135deg, #523e31 0%, #b58d47 50%, #f2ece1 100%);">
+              </button>
+
+              <button
+                type="button"
+                class="bg-option"
+                data-name="Нежная Пудра"
+                data-bg="powder"
+                style="background: radial-gradient(circle at 20% 20%, rgba(255,255,255,.65), transparent 26%), radial-gradient(circle at 80% 18%, rgba(234,215,207,.7), transparent 24%), linear-gradient(135deg, #9d6f60 0%, #dfC5bc 52%, #fcf5ee 100%);">
+              </button>
+            </div>
+
+            <div class="field-label">4. Добавьте тёплое пожелание</div>
+            <textarea class="textarea" id="certMessage" placeholder="Текст пожелания">Желаю отдыха, лёгкости и приятного восстановления. Пусть это время будет только для тебя.</textarea>
+
+            <div class="quick-messages">
+              <button type="button" class="quick-message" data-message="Желаю отдыха, лёгкости и приятного восстановления. Пусть это время будет только для тебя.">Для близкого</button>
+              <button type="button" class="quick-message" data-message="Пусть этот массаж подарит спокойствие, расслабление и ощущение заботы.">Антистресс</button>
+              <button type="button" class="quick-message" data-message="Дарю тебе время для себя, тишину, заботу и полное восстановление.">Время для себя</button>
+            </div>
+
+            <div class="form-row">
+              <button class="btn btn-primary" id="downloadCertificate" type="button">✨ Скачать PNG</button>
+              <button class="btn btn-secondary" id="clearCertificate" type="button">Сбросить</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="cert-preview-wrap glass fade-up">
+          <div class="cert-preview" id="certificateCanvas">
+            <div class="cert-bg-layer" id="certBgLayer"></div>
+
+            <div class="cert-content">
+              <div class="cert-top">
+                <small>Подарочный сертификат</small>
+                <div class="cert-title">Спина'ОК</div>
+                <div class="cert-value" id="previewValue">3 000 ₽</div>
+
+                <div class="cert-box">
+                  <strong>Программа:</strong>
+                  <div id="previewType">На любую услугу</div>
+                </div>
+              </div>
+
+              <div>
+                <div class="cert-box">
+                  <div><strong>Кому:</strong> <span id="previewTo">Елена</span></div>
+                  <div><strong>От кого:</strong> <span id="previewFrom">Алексей</span></div>
+                </div>
+
+                <div class="cert-box">
+                  <strong>Пожелание:</strong>
+                  <div id="previewMessage">Желаю отдыха, лёгкости и приятного восстановления. Пусть это время будет только для тебя.</div>
+                </div>
+
+                <div style="margin-top:14px; opacity:.9; font-size:13px; letter-spacing:0.4px;">
+                  студия массажа • Екатеринбург, ул. Фучика, 11 • спинаОК.рф
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="certificate-help">
+            Наведите курсор на сертификат, чтобы увидеть 3D-эффект. Скачайте PNG и отправьте получателю в мессенджер!
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ОТЗЫВЫ -->
+  <section class="section" id="reviews">
+    <div class="spk-container">
+      <div class="section-eyebrow fade-up"><span class="pill">💬 Впечатления гостей</span></div>
+      <h2 class="section-title fade-up">Что говорят <em>гости студии</em></h2>
+      <p class="section-subtitle fade-up">
+        Отзывы помогают выбрать мастера и почувствовать уверенность перед первым визитом.
+      </p>
+
+      <div class="reviews-grid">
+        <article class="review glass spotlight-card fade-up">
+          <div>
+            <div class="stars">★★★★★</div>
+            <p>«Очень уютное место. После массажа спины ушло ощущение зажатости, а в теле появилась настоящая лёгкость. Вернусь обязательно на курс!»</p>
+          </div>
+          <div class="review-author">
+            <div class="review-avatar">О</div>
+            <div>
+              <strong>Ольга</strong>
+              <div class="review-source">Гость студии • Классический массаж</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="review glass spotlight-card fade-up">
+          <div>
+            <div class="stars">★★★★★</div>
+            <p>«Понравилась атмосфера, музыка и внимательность Виктора. Проработал все зажимы после зала. Записался онлайн без проблем, всё удобно.»</p>
+          </div>
+          <div class="review-author">
+            <div class="review-avatar">Д</div>
+            <div>
+              <strong>Дмитрий</strong>
+              <div class="review-source">Онлайн-запись • Спортивный массаж</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="review glass spotlight-card fade-up">
+          <div>
+            <div class="stars">★★★★★</div>
+            <p>«Подарили сертификат в эту студию — это был лучший подарок за последнее время. Очень красиво, спокойно и профессионально.»</p>
+          </div>
+          <div class="review-author">
+            <div class="review-avatar">Е</div>
+            <div>
+              <strong>Екатерина</strong>
+              <div class="review-source">Подарочный сертификат</div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="spk-container">
+      <div class="section-eyebrow fade-up"><span class="pill">❓ Ответы на вопросы</span></div>
+      <h2 class="section-title fade-up">Частые <em>вопросы</em></h2>
+      <p class="section-subtitle fade-up">
+        Всё, что важно знать перед первым визитом в студию «Спина'ОК».
+      </p>
+
+      <div class="faq fade-up">
+        <div class="faq-item active">
+          <button class="faq-q" type="button">Какой массаж выбрать, если я иду впервые? <span>+</span></button>
+          <div class="faq-a">Если вы впервые приходите на массаж и не уверены в выборе, лучше всего подходит общий разминающий массаж на 60 минут или классический массаж спины на 40 минут. Они помогают мягко познакомиться с техникой мастера и понять, какой формат вам ближе.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" type="button">Бывает ли больно во время массажа? <span>+</span></button>
+          <div class="faq-a">Всё зависит от выбранной техники и чувствительности тела. Расслабляющий массаж мягкий, спортивный может быть более интенсивным. Мастер всегда ориентируется на ваши ощущения и регулирует глубину воздействия.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" type="button">Нужна ли специальная подготовка перед сеансом? <span>+</span></button>
+          <div class="faq-a">Специальная подготовка не нужна. Достаточно прийти за 5–10 минут до начала, не переедать непосредственно перед процедурой и сообщить мастеру о своих пожеланиях.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" type="button">Что выбрать при сидячей работе и напряжении в шее? <span>+</span></button>
+          <div class="faq-a">Отлично подходит классический массаж спины и шейно-воротниковой зоны. Он прицельно снимает локальное напряжение в области шеи, плеч и лопаток.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" type="button">Можно ли купить массаж в подарок? <span>+</span></button>
+          <div class="faq-a">Да, вы можете сгенерировать красивый именной сертификат прямо на нашем сайте, скачать его в PNG и написать нам в мессенджер для быстрой активации.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" type="button">Сколько сеансов нужно для заметного эффекта? <span>+</span></button>
+          <div class="faq-a">Уже после первого сеанса вы почувствуете облегчение и лёгкость, но устойчивый результат даёт курс из 6 или 12 процедур со скидкой до 10%.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- КОНТАКТЫ -->
+  <div class="spk-container contacts-section">
+    <div class="contacts-block spotlight-card fade-up">
+      <h3>Ждём вас в студии «Спина'ОК»</h3>
+
+      <div class="contacts-details">
+        <p><span>📍</span> Екатеринбург, ул. Фучика, 11, оф. 89</p>
+
+        <p>
+          <strong style="color:var(--accent-dark);">Мастер Виктор:</strong>
+          <a href="tel:+79995659006" class="phone-number">+7 999 565-90-06</a>
+        </p>
+
+        <p><span>⏰</span> Режим работы: ежедневно по предварительной записи</p>
+
+        <div class="social-links">
+          <a href="https://t.me/spinaok96" target="_blank" rel="noopener" class="social-link">
+            <i class="fab fa-telegram-plane"></i> Telegram: @spinaok96
+          </a>
+
+          <a href="https://wa.me/79995659006" target="_blank" rel="noopener" class="social-link">
+            <i class="fab fa-whatsapp"></i> WhatsApp
+          </a>
+
+          <a href="https://max.ru/u/f9LHodD0cOJVHsVXyAAu9BFSyvQvXv8Nd2-JkojRmoXPUX_Skel8VrPXjHs" target="_blank" rel="noopener" class="social-link">
+            <i class="fas fa-comment-dots"></i> Max
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="spk-container">
+      <div class="footer-box glass">
+        <div>
+          <strong style="display:block; font-size:20px; color:var(--text); margin-bottom:6px; font-family:'Playfair Display', serif;">Студия массажа «Спина'ОК»</strong>
+          <div>Спокойствие. Восстановление. Забота о теле.</div>
+        </div>
+
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          <button class="btn btn-primary open-booking" type="button">Записаться</button>
+          <a href="#certificates" class="btn btn-secondary">Купить сертификат</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ПЛАВАЮЩАЯ КНОПКА -->
+  <button class="btn btn-primary floating-book-btn open-booking" type="button">✨ Записаться онлайн</button>
+
+  <!-- МОДАЛЬНОЕ ОКНО DIKIDI -->
+  <div class="modal" id="bookingModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Онлайн-запись в студию «Спина'ОК»</h3>
+        <button class="modal-close" id="closeModal" aria-label="Закрыть окно" type="button">×</button>
+      </div>
+
+      <div class="modal-body">
+        <iframe id="dikidiFrame" src="https://dikidi.ru/442545/" title="Онлайн-запись Dikidi" loading="lazy"></iframe>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- /.spinaok-page -->
+
+<script>
+(function(){
+  'use strict';
+
+  var root = document.querySelector('.spinaok-page');
+  if(!root) return;
+
+  /* =========================================================
+     0. Утилита всплывающих уведомлений (Toast)
+  ========================================================== */
+  var toastEl = document.getElementById('spkToast');
+  var toastTimer = null;
+
+  function showToast(msg){
+    if(!toastEl) return;
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    if(toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){
+      toastEl.classList.remove('show');
+    }, 3400);
+  }
+
+  /* =========================================================
+     1. Интерактивный фоновый Canvas (золотая SPA-пыльца)
+  ========================================================== */
+  var canvas = document.getElementById('ambientCanvas');
+  if(canvas && canvas.getContext){
+    var ctx = canvas.getContext('2d');
+    var particles = [];
+    var mouse = { x: -1000, y: -1000 };
+
+    function resizeCanvas(){
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    window.addEventListener('mousemove', function(e){
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+
+    for(var i = 0; i < 36; i++){
+      particles.push({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        r: Math.random() * 2.6 + 1,
+        vx: (Math.random() - 0.5) * 0.35,
+        vy: -Math.random() * 0.45 - 0.15,
+        alpha: Math.random() * 0.55 + 0.2,
+        gold: Math.random() > 0.45
+      });
+    }
+
+    function drawParticles(){
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for(var i = 0; i < particles.length; i++){
+        var p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+
+        var dx = p.x - mouse.x;
+        var dy = p.y - mouse.y;
+        var dist = Math.sqrt(dx * dx + dy * dy);
+        if(dist < 110 && dist > 0){
+          p.x += (dx / dist) * 0.8;
+          p.y += (dy / dist) * 0.8;
+        }
+
+        if(p.y < -10) p.y = canvas.height + 10;
+        if(p.x < -10) p.x = canvas.width + 10;
+        if(p.x > canvas.width + 10) p.x = -10;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = p.gold
+          ? 'rgba(201, 164, 97, ' + p.alpha + ')'
+          : 'rgba(104, 155, 134, ' + p.alpha + ')';
+        ctx.fill();
+      }
+      requestAnimationFrame(drawParticles);
+    }
+    requestAnimationFrame(drawParticles);
+  }
+
+  /* =========================================================
+     2. Полоса прогресса прокрутки + Flash-блик на карточках
+  ========================================================== */
+  var scrollProgress = document.getElementById('scrollProgress');
+  window.addEventListener('scroll', function(){
+    if(!scrollProgress) return;
+    var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    var docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    var pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    scrollProgress.style.width = Math.min(100, Math.max(0, pct)) + '%';
+  });
+
+  var spotlightCards = root.querySelectorAll('.spotlight-card');
+  Array.prototype.forEach.call(spotlightCards, function(card){
+    card.addEventListener('mousemove', function(e){
+      var rect = card.getBoundingClientRect();
+      card.style.setProperty('--mouse-x', (e.clientX - rect.left) + 'px');
+      card.style.setProperty('--mouse-y', (e.clientY - rect.top) + 'px');
+    });
+  });
+
+  /* Эффект водной ряби на кнопках */
+  var allButtons = root.querySelectorAll('.btn');
+  Array.prototype.forEach.call(allButtons, function(btn){
+    btn.addEventListener('click', function(e){
+      var rect = btn.getBoundingClientRect();
+      var ripple = document.createElement('span');
+      var size = Math.max(rect.width, rect.height);
+      ripple.className = 'spk-ripple';
+      ripple.style.width = ripple.style.height = size + 'px';
+      ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+      ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+      btn.appendChild(ripple);
+      setTimeout(function(){
+        if(ripple.parentNode) ripple.parentNode.removeChild(ripple);
+      }, 650);
+    });
+  });
+
+  /* 3D-наклон для Hero-изображения и превью сертификата */
+  function attach3DTilt(el, intensity){
+    if(!el) return;
+    el.addEventListener('mousemove', function(e){
+      if(window.innerWidth < 820) return;
+      var rect = el.getBoundingClientRect();
+      var x = (e.clientX - rect.left) / rect.width - 0.5;
+      var y = (e.clientY - rect.top) / rect.height - 0.5;
+      el.style.transform = 'perspective(1000px) rotateY(' + (x * intensity) + 'deg) rotateX(' + (-y * intensity) + 'deg)';
+    });
+    el.addEventListener('mouseleave', function(){
+      el.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg)';
+    });
+  }
+
+  attach3DTilt(document.getElementById('heroVisual'), 7);
+  attach3DTilt(document.getElementById('certificateCanvas'), 8);
+
+  /* =========================================================
+     3. Анимация появления блоков
+  ========================================================== */
+  var fadeEls = root.querySelectorAll('.fade-up');
+
+  if('IntersectionObserver' in window){
+    var observer = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    Array.prototype.forEach.call(fadeEls, function(el){ observer.observe(el); });
+  } else {
+    Array.prototype.forEach.call(fadeEls, function(el){ el.classList.add('visible'); });
+  }
+
+  /* =========================================================
+     4. Интерактивный подбор массажа по симптомам
+  ========================================================== */
+  var ZONES_DATA = {
+    back: {
+      title: 'Рекомендуем: Классический массаж спины',
+      desc: 'Прицельная проработка шейно-воротниковой зоны, грудного отдела и поясницы. Убирает скованность от сидячей работы уже после 1 сеанса.',
+      duration: '⏱ 40 минут',
+      price: '💳 2 000 ₽'
+    },
+    fatigue: {
+      title: 'Рекомендуем: Общий разминающий массаж',
+      desc: 'Полная перезагрузка для тела и нервной системы от макушки до стоп. Возвращает глубокий сон, лёгкость и свободу движений.',
+      duration: '⏱ 60 минут',
+      price: '💳 2 500 ₽'
+    },
+    sport: {
+      title: 'Рекомендуем: Спортивный массаж',
+      desc: 'Глубокая интенсивная техника для быстрого выведения молочной кислоты, снятия крепатуры и защиты мышц от травм.',
+      duration: '⏱ 45 минут',
+      price: '💳 2 900 ₽'
+    },
+    tone: {
+      title: 'Рекомендуем: Скульптурный массаж',
+      desc: 'Интенсивная ручная коррекция контуров тела в сочетании с лимфодренажным термообёртыванием для уменьшения объёмов.',
+      duration: '⏱ 60 минут',
+      price: '💳 3 200 ₽'
+    }
+  };
+
+  var zoneBtns = root.querySelectorAll('.zone-btn');
+  var zoneRecTitle = document.getElementById('zoneRecTitle');
+  var zoneRecDesc = document.getElementById('zoneRecDesc');
+  var zoneRecDuration = document.getElementById('zoneRecDuration');
+  var zoneRecPrice = document.getElementById('zoneRecPrice');
+
+  Array.prototype.forEach.call(zoneBtns, function(btn){
+    btn.addEventListener('click', function(){
+      Array.prototype.forEach.call(zoneBtns, function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      var key = btn.getAttribute('data-zone');
+      var info = ZONES_DATA[key];
+      if(info && zoneRecTitle){
+        zoneRecTitle.textContent = info.title;
+        zoneRecDesc.textContent = info.desc;
+        zoneRecDuration.textContent = info.duration;
+        zoneRecPrice.textContent = info.price;
+      }
+    });
+  });
+
+  /* =========================================================
+     5. Фильтрация карточек услуг
+  ========================================================== */
+  var filterBtns = root.querySelectorAll('.filter-btn');
+  var serviceCards = root.querySelectorAll('.service-card');
+
+  Array.prototype.forEach.call(filterBtns, function(btn){
+    btn.addEventListener('click', function(){
+      Array.prototype.forEach.call(filterBtns, function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      var filter = btn.getAttribute('data-filter');
+
+      Array.prototype.forEach.call(serviceCards, function(card){
+        var cat = card.getAttribute('data-category');
+        if(filter === 'all' || cat === filter){
+          card.classList.remove('hidden-card');
+        } else {
+          card.classList.add('hidden-card');
+        }
+      });
+    });
+  });
+
+  /* =========================================================
+     6. Плавная прокрутка по анкорам
+  ========================================================== */
+  var anchorLinks = root.querySelectorAll('a[href^="#"]');
+
+  Array.prototype.forEach.call(anchorLinks, function(link){
+    link.addEventListener('click', function(e){
+      var hash = link.getAttribute('href');
+      if(!hash || hash.length < 2) return;
+
+      var target = document.querySelector(hash);
+      if(!target) return;
+
+      e.preventDefault();
+      var offset = 80;
+      var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+      window.scrollTo({ top: top, behavior: 'smooth' });
+    });
+  });
+
+  /* =========================================================
+     7. FAQ-аккордеон
+  ========================================================== */
+  var faqButtons = root.querySelectorAll('.faq-q');
+
+  Array.prototype.forEach.call(faqButtons, function(btn){
+    btn.addEventListener('click', function(){
+      var item = btn.closest('.faq-item');
+      if(item) item.classList.toggle('active');
+    });
+  });
+
+  /* =========================================================
+     8. Модальное окно Dikidi
+  ========================================================== */
+  var bookingModal = document.getElementById('bookingModal');
+  var closeModalBtn = document.getElementById('closeModal');
+
+  function openModal(){
+    if(!bookingModal) return;
+    bookingModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal(){
+    if(!bookingModal) return;
+    bookingModal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  Array.prototype.forEach.call(root.querySelectorAll('.open-booking'), function(btn){
+    btn.addEventListener('click', openModal);
+  });
+
+  if(closeModalBtn){
+    closeModalBtn.addEventListener('click', closeModal);
+  }
+
+  if(bookingModal){
+    bookingModal.addEventListener('click', function(e){
+      if(e.target === bookingModal) closeModal();
+    });
+  }
+
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && bookingModal && bookingModal.classList.contains('active')){
+      closeModal();
+    }
+  });
+
+  /* =========================================================
+     9. Конструктор подарочного сертификата
+  ========================================================== */
+  var fromInput        = document.getElementById('fromName');
+  var toInput          = document.getElementById('toName');
+  var certType         = document.getElementById('certType');
+  var certValueSelect  = document.getElementById('certValueSelect');
+  var customAmountBox  = document.getElementById('customAmountContainer');
+  var customAmount     = document.getElementById('customAmount');
+  var certMessage      = document.getElementById('certMessage');
+
+  var previewFrom      = document.getElementById('previewFrom');
+  var previewTo        = document.getElementById('previewTo');
+  var previewType      = document.getElementById('previewType');
+  var previewValue     = document.getElementById('previewValue');
+  var previewMessage   = document.getElementById('previewMessage');
+
+  var certBgLayer      = document.getElementById('certBgLayer');
+  var certificateCanvas = document.getElementById('certificateCanvas');
+
+  var bgOptions        = root.querySelectorAll('.bg-option');
+  var quickMessages    = root.querySelectorAll('.quick-message');
+  var downloadBtn      = document.getElementById('downloadCertificate');
+  var clearBtn         = document.getElementById('clearCertificate');
+
+  var DEFAULTS = {
+    from: 'Алексей',
+    to: 'Елена',
+    type: 'На любую услугу',
+    value: '3 000 ₽',
+    message: 'Желаю отдыха, лёгкости и приятного восстановления. Пусть это время будет только для тебя.'
+  };
+
+  function getCurrentValue(){
+    if(!certValueSelect) return DEFAULTS.value;
+    if(certValueSelect.value === 'custom'){
+      var custom = customAmount && customAmount.value.trim();
+      return custom ? custom : '3 000 ₽';
+    }
+    return certValueSelect.value;
+  }
+
+  function updateCertificate(){
+    if(previewFrom)    previewFrom.textContent    = (fromInput && fromInput.value.trim()) || '___';
+    if(previewTo)      previewTo.textContent      = (toInput && toInput.value.trim()) || '___';
+    if(previewType)    previewType.textContent    = (certType && certType.value) || DEFAULTS.type;
+    if(previewValue)   previewValue.textContent   = getCurrentValue();
+    if(previewMessage) previewMessage.textContent = (certMessage && certMessage.value.trim()) || '—';
+
+    if(certValueSelect && customAmountBox){
+      customAmountBox.style.display = (certValueSelect.value === 'custom') ? 'block' : 'none';
+    }
+  }
+
+  if(fromInput)       fromInput.addEventListener('input', updateCertificate);
+  if(toInput)         toInput.addEventListener('input', updateCertificate);
+  if(certType)        certType.addEventListener('change', updateCertificate);
+  if(certMessage)     certMessage.addEventListener('input', updateCertificate);
+  if(customAmount)    customAmount.addEventListener('input', updateCertificate);
+  if(certValueSelect) certValueSelect.addEventListener('change', updateCertificate);
+
+  Array.prototype.forEach.call(bgOptions, function(option){
+    option.addEventListener('click', function(){
+      Array.prototype.forEach.call(bgOptions, function(o){ o.classList.remove('active'); });
+      option.classList.add('active');
+
+      var bg = option.style.background || option.getAttribute('style');
+      if(certBgLayer && bg){
+        certBgLayer.style.background = bg;
+      }
+    });
+  });
+
+  Array.prototype.forEach.call(quickMessages, function(btn){
+    btn.addEventListener('click', function(){
+      if(certMessage){
+        certMessage.value = btn.getAttribute('data-message') || '';
+        updateCertificate();
+      }
+    });
+  });
+
+  if(downloadBtn){
+    downloadBtn.addEventListener('click', function(){
+      if(typeof html2canvas === 'undefined'){
+        showToast('Модуль сохранения ещё загружается. Попробуйте через секунду.');
+        return;
+      }
+
+      var originalText = downloadBtn.textContent;
+      downloadBtn.textContent = 'Готовим сертификат...';
+      downloadBtn.disabled = true;
+      certificateCanvas.style.transform = 'none';
+
+      html2canvas(certificateCanvas, {
+        backgroundColor: null,
+        scale: 2,
+        useCORS: true,
+        logging: false
+      }).then(function(canvasEl){
+        var link = document.createElement('a');
+        link.download = 'spinaok-sertifikat.png';
+        link.href = canvasEl.toDataURL('image/png');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        downloadBtn.textContent = originalText;
+        downloadBtn.disabled = false;
+        showToast('✨ Сертификат успешно сохранён в PNG!');
+      }).catch(function(){
+        downloadBtn.textContent = originalText;
+        downloadBtn.disabled = false;
+        showToast('Не удалось создать PNG. Попробуйте ещё раз.');
+      });
+    });
+  }
+
+  if(clearBtn){
+    clearBtn.addEventListener('click', function(){
+      if(fromInput)   fromInput.value = DEFAULTS.from;
+      if(toInput)     toInput.value = DEFAULTS.to;
+      if(certType)    certType.value = DEFAULTS.type;
+      if(certMessage) certMessage.value = DEFAULTS.message;
+
+      if(certValueSelect) certValueSelect.value = '3 000 ₽';
+      if(customAmount)    customAmount.value = '';
+
+      Array.prototype.forEach.call(bgOptions, function(o, i){
+        o.classList.toggle('active', i === 0);
+      });
+
+      if(certBgLayer && bgOptions[0]){
+        certBgLayer.style.background = bgOptions[0].style.background;
+      }
+
+      updateCertificate();
+      showToast('Настройки сертификата сброшены');
+    });
+  }
+
+  updateCertificate();
+
+  /* =========================================================
+     10. Таймер акции (24 часа, сохраняется в localStorage)
+  ========================================================== */
+  var hoursEl   = document.getElementById('hours');
+  var minutesEl = document.getElementById('minutes');
+  var secondsEl = document.getElementById('seconds');
+
+  var STORAGE_KEY = 'spinaok_offer_deadline';
+  var DURATION = 24 * 60 * 60 * 1000;
+  var deadline = 0;
+
+  try {
+    deadline = parseInt(window.localStorage.getItem(STORAGE_KEY) || '0', 10);
+    if(!deadline || isNaN(deadline) || Date.now() > deadline){
+      deadline = Date.now() + DURATION;
+      window.localStorage.setItem(STORAGE_KEY, String(deadline));
+    }
+  } catch(err){
+    deadline = Date.now() + DURATION;
+  }
+
+  function pad(num){
+    return num < 10 ? '0' + num : String(num);
+  }
+
+  function tick(){
+    if(!hoursEl || !minutesEl || !secondsEl) return;
+
+    var diff = deadline - Date.now();
+    if(diff < 0) diff = 0;
+
+    var totalSeconds = Math.floor(diff / 1000);
+    var h = Math.floor(totalSeconds / 3600);
+    var m = Math.floor((totalSeconds % 3600) / 60);
+    var s = totalSeconds % 60;
+
+    hoursEl.textContent   = pad(h);
+    minutesEl.textContent = pad(m);
+    secondsEl.textContent = pad(s);
+  }
+
+  tick();
+  setInterval(tick, 1000);
+
+  /* =========================================================
+     11. Генеративный SPA-звук (Web Audio API — работает без внешних файлов!)
+  ========================================================== */
+  var musicToggle = document.getElementById('musicToggle');
+  var musicLabel  = document.getElementById('musicLabel');
+  var audioCtx    = null;
+  var masterGain  = null;
+  var isPlaying   = false;
+  var chimeTimer  = null;
+
+  function startSpaAudio(){
+    var AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if(!AudioContextClass) return;
+
+    if(!audioCtx){
+      audioCtx = new AudioContextClass();
+      masterGain = audioCtx.createGain();
+      masterGain.gain.value = 0.08;
+      masterGain.connect(audioCtx.destination);
+
+      /* Мягкий тёплый аккорд поющих чаш (Fmaj7: 174.6Hz, 220Hz, 261.6Hz, 329.6Hz) */
+      var freqs = [174.61, 220.0, 261.63, 329.63];
+      freqs.forEach(function(f){
+        var osc = audioCtx.createOscillator();
+        var oscGain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = f;
+        oscGain.gain.value = 0.22;
+        osc.connect(oscGain);
+        oscGain.connect(masterGain);
+        osc.start();
+      });
+    }
+
+    if(audioCtx.state === 'suspended'){
+      audioCtx.resume();
+    }
+
+    chimeTimer = setInterval(function(){
+      if(!isPlaying || !audioCtx) return;
+      var notes = [523.25, 659.25, 783.99, 880.0];
+      var note = notes[Math.floor(Math.random() * notes.length)];
+      var osc = audioCtx.createOscillator();
+      var g = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = note;
+      g.gain.setValueAtTime(0.001, audioCtx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.05, audioCtx.currentTime + 0.4);
+      g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 3.5);
+      osc.connect(g);
+      g.connect(masterGain);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 3.6);
+    }, 4200);
+  }
+
+  function stopSpaAudio(){
+    if(chimeTimer){
+      clearInterval(chimeTimer);
+      chimeTimer = null;
+    }
+    if(audioCtx && audioCtx.state === 'running'){
+      audioCtx.suspend();
+    }
+  }
+
+  if(musicToggle){
+    musicToggle.addEventListener('click', function(){
+      if(isPlaying){
+        stopSpaAudio();
+        isPlaying = false;
+        musicToggle.classList.remove('playing');
+        if(musicLabel) musicLabel.textContent = 'SPA-звук';
+        showToast('🔇 Фоновый SPA-звук выключен');
+      } else {
+        startSpaAudio();
+        isPlaying = true;
+        musicToggle.classList.add('playing');
+        if(musicLabel) musicLabel.textContent = 'Играет SPA';
+        showToast('🎵 Включена расслабляющая атмосфера поющих чаш');
+      }
+    });
+  }
+
+})();
+</script>
+</body>
+</html>
